@@ -1,0 +1,109 @@
+doctype html
+html
+  head
+    title= title 
+    script.
+      function unitPrice(price, priceId, amountId, sumId) {
+      var x = document.getElementById(priceId);
+      x.value = price;
+      unitSum(priceId, amountId, sumId);
+      }
+      function unitSum(priceId, amountId, sumId) {
+      var p = document.getElementById(priceId);
+      var a = document.getElementById(amountId); 
+      var s = document.getElementById(sumId);
+      s.value = Number(p.value) * Number(a.value);
+      }
+    style.
+      body {
+      width: 95%;
+      margin: 1em auto;
+      text-align: center;
+      background-color: black;
+      color: white;
+      }
+      table {
+      margin: 1em auto;  
+      }
+      th {
+      border-top: solid thin lightgray;
+      border-bottom: solid thin lightgray;
+      padding: 4px 0.5em; 
+      }
+      td {
+      border-bottom: solid thin lightgray;
+      padding: 4px 0.5em;
+      }
+      input[type='text'], input[type='number'] {
+      width: 4em;  
+      }
+      .right {
+      text-align: right;
+      }
+      .center {
+      text-align: center;  
+      }
+  body
+    h1= title
+    hr
+    form(action="/",method="post")
+      table
+        tbody
+          tr
+            th 品名
+            th 容量
+            th 冰
+            th 糖
+            th 單價
+            th 數量
+            th 小計
+          each prod in prodList
+            tr
+              td.right= prod.name
+              td
+                input(
+                  type="radio", 
+                  name=prod.id+"Size", 
+                  id=prod.id+"SizeM", 
+                  value="M", 
+                  checked='', 
+                  onclick="unitPrice("+prod.priceM+",'"+prod.id+"Price','"+prod.id+"Amount','"+prod.id+"Sum')"
+                )
+                label(for=prod.id+"SizeM") 中杯(M)
+                input(
+                  type="radio", 
+                  name=prod.id+"Size", 
+                  id=prod.id+"SizeL",
+                  value="L", 
+                  onclick="unitPrice("+prod.priceL+",'"+prod.id+"Price','"+prod.id+"Amount','"+prod.id+"Sum')"
+                )
+                label(for=prod.id+"SizeL") 大杯(L)
+              td
+                select(id=prod.id+"Ice", name=prod.id+"Ice")
+                  option(value='0', selected='') 正常
+                  option(value='1') 少冰
+                  option(value='2') 去冰
+              td
+                select(id=prod.id+"Sugar", name=prod.id+"Sugar")
+                  option(value='0', selected='') 正常
+                  option(value='1') 減糖
+                  option(value='2') 微糖
+                  option(value='3') 無糖
+              td
+                input.right(type="text", readonly="true", id=prod.id+"Price", name=prod.id+"Price", value=prod.priceM)
+              td
+                input.right(
+                  type="number", 
+                  min="0", 
+                  step="1", 
+                  id=prod.id+"Amount", 
+                  name=prod.id+"Amount", 
+                  value="0", 
+                  onchange="unitSum('"+prod.id+"Price','"+prod.id+"Amount','"+prod.id+"Sum')"
+                )
+              td
+                input.right(type="text", readonly="true", id=prod.id+"Sum", name=prod.id+"Sum", value="0")
+      p.center 
+        input(type="submit")
+        | 
+        input(type="reset")

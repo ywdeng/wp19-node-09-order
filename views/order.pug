@@ -1,0 +1,65 @@
+doctype html
+html
+  head
+    title= title 
+    script.
+      function unitPrice(price, priceId, amountId, sumId) {
+      var x = document.getElementById(priceId);
+      x.value = price;
+      unitSum(priceId, amountId, sumId);
+      }
+      function unitSum(priceId, amountId, sumId) {
+      var p = document.getElementById(priceId);
+      var a = document.getElementById(amountId); 
+      var s = document.getElementById(sumId);
+      s.value = Number(p.value) * Number(a.value);
+      }
+    style.
+      body {
+      width: 95%;
+      margin: 1em auto;
+      text-align: center;
+      background-color: black;
+      color: white;
+      }
+      table {
+      margin: 1em auto;  
+      }
+      th {
+      border-top: solid thin lightgray;
+      border-bottom: solid thin lightgray;
+      padding: 4px 0.5em;
+      }
+      td {
+      border-bottom: solid thin lightgray;
+      padding: 4px 0.5em;
+      }
+      input[type='text'], input[type='number'] {
+      width: 4em;  
+      }
+      .right {
+      text-align: right;
+      }
+      .left {
+      text-align: left;  
+      }
+  body
+    h1= title
+    hr
+    table
+      tbody
+        tr
+          th 品名
+          th 容量
+          th 單價
+          th 數量
+          th 小計
+          th 備註
+        each prod in prodList
+          tr
+            td.right= prod.name
+            td= prod.size
+            td.right= prod.price
+            td.right= prod.amount
+            td.right= prod.sum
+            td.left= prod.note
